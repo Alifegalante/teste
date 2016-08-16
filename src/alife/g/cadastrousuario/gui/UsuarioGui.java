@@ -16,8 +16,9 @@ import javax.swing.table.DefaultTableModel;
 public class UsuarioGui extends javax.swing.JInternalFrame {
 
     private UsuarioController controller;
+
     public UsuarioGui() {
-       this.controller = new UsuarioController();
+        this.controller = new UsuarioController();
         initComponents();
     }
 
@@ -308,49 +309,53 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jpwConfirmacaoActionPerformed
 
     private void jbtNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtNovoActionPerformed
-       habilitarCampos();
-       this.controller.novo();
+        habilitarCampos();
+        this.controller.novo();
     }//GEN-LAST:event_jbtNovoActionPerformed
 
     private void jbtSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalvarActionPerformed
-       enviarForm();
-       try {
-            this.controller.salvar();
-            this.limparCampos(); 
-            JOptionPane.showMessageDialog(this, "Salvo com sucesso!!!");
-       } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar!!!" +e.getMessage());
-       }
-       
+        if (!(this.controller.getUsuarioManipulado() == null)) {
+            enviarForm();
+            try {
+                this.controller.salvar();
+                this.limparCampos();
+                JOptionPane.showMessageDialog(this, "Salvo com sucesso!!!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar!!!" + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Nao ha nada para salvar!!", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jbtSalvarActionPerformed
 
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
-       desabilitarCampos();
-       this.controller.setUsuarioManipulado(null);
+        desabilitarCampos();
+        this.controller.setUsuarioManipulado(null);
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
     private void jbtExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirActionPerformed
-       if (!(this.controller.getUsuarioManipulado()==null)) {    //O ! representa uma negacao
-          if (JOptionPane.showConfirmDialog(null, "Deseja realmente remover este usuario?",
-        "Excluir registro,", JOptionPane.YES_NO_OPTION)
-        == JOptionPane.YES_NO_OPTION) {
-           this.controller.excluir();                            // this representa deste objeto
-       }else{
-           JOptionPane.showMessageDialog(this,"Não a nada para excluir");
-          }
-       }
+        if (!(this.controller.getUsuarioManipulado() == null)) {
+            enviarForm();
+            try {
+                this.controller.excluir();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao excluir!!!" + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Nao ha nada para excluir!!!", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jbtExcluirActionPerformed
 
     private void jbtListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtListarActionPerformed
-       this.controller.pesquisar();
-       DefaultTableModel model = (DefaultTableModel)jtbLista.getModel();
-       for(int i = 0; i < this.controller.getLista().size(); i++){
-           model.addRow(new Object[]{
-               this.controller.getLista().get(i).getCodigo().toString(),
-               this.controller.getLista().get(i).getNome()
-       });
+        this.controller.pesquisar();
+        DefaultTableModel model = (DefaultTableModel) jtbLista.getModel();
+        for (int i = 0; i < this.controller.getLista().size(); i++) {
+            model.addRow(new Object[]{
+                this.controller.getLista().get(i).getCodigo().toString(),
+                this.controller.getLista().get(i).getNome()
+            });
     }//GEN-LAST:event_jbtListarActionPerformed
-}
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -380,7 +385,7 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void habilitarCampos() {
-        jtfNome.setEnabled(true); 
+        jtfNome.setEnabled(true);
         jtfLogin.setEnabled(true);
         jcbTipo.setEnabled(true);
         jckAtivo.setEnabled(true);
@@ -390,20 +395,20 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
     }
 
     private void desabilitarCampos() {
-        jtfNome.setEnabled(false); 
+        jtfNome.setEnabled(false);
         jtfLogin.setEditable(false);
         jcbTipo.setEnabled(false);
         jckAtivo.setEnabled(false);
         jpwSenha.setEnabled(false);
         jpwConfirmacao.setEnabled(false);
-        jtfCodigo.setEditable(false);   
+        jtfCodigo.setEditable(false);
     }
 
     private void enviarForm() {
         if (this.jtfCodigo.getText().equals("")) {
             this.controller.getUsuarioManipulado().setCodigo(null);
-        }else{
-        this.controller.getUsuarioManipulado().setCodigo(Integer.parseInt(this.jtfCodigo.getText()));
+        } else {
+            this.controller.getUsuarioManipulado().setCodigo(Integer.parseInt(this.jtfCodigo.getText()));
         }
         this.controller.getUsuarioManipulado().setNome(this.jtfNome.getText());
         this.controller.getUsuarioManipulado().setLogin(this.jtfLogin.getText());
@@ -412,14 +417,14 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
         if (jckAtivo.isSelected()) {
             this.controller.getUsuarioManipulado().setStatus(1);
         }
-    
+
     }
 
     private void setEnable(boolean b) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    private void limparCampos(){
+
+    private void limparCampos() {
         jtfLogin.setText("");
         jtfNome.setText("");
         jtfCodigo.setText("");
