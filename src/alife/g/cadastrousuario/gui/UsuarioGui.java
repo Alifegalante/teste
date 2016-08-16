@@ -335,11 +335,10 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
 
     private void jbtExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirActionPerformed
         if (!(this.controller.getUsuarioManipulado() == null)) {
-            enviarForm();
-            try {
+              if (JOptionPane.showConfirmDialog(null, "Deseja realmente remover este registro?", "Excluir registro",
+                JOptionPane.YES_NO_OPTION)
+              ==JOptionPane.YES_OPTION) {
                 this.controller.excluir();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir!!!" + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Nao ha nada para excluir!!!", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -349,6 +348,7 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
     private void jbtListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtListarActionPerformed
         this.controller.pesquisar();
         DefaultTableModel model = (DefaultTableModel) jtbLista.getModel();
+        model.setRowCount(0);
         for (int i = 0; i < this.controller.getLista().size(); i++) {
             model.addRow(new Object[]{
                 this.controller.getLista().get(i).getCodigo().toString(),
