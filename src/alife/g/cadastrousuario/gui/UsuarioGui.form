@@ -234,6 +234,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfCodigo">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="lostFocus"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfLogin">
           <Properties>

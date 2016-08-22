@@ -5,7 +5,9 @@
  */
 package alife.g.cadastrousuario.gui;
 
+import alife.g.cadastrousuario.dao.domain.Usuario;
 import alife.g.cadastrousuario.to.UsuarioController;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,6 +18,8 @@ import javax.swing.table.DefaultTableModel;
 public class UsuarioGui extends javax.swing.JInternalFrame {
 
     private UsuarioController controller;
+    
+    
 
     public UsuarioGui() {
         this.controller = new UsuarioController();
@@ -137,6 +141,12 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
         jLabel3.setText("Login:");
 
         jLabel4.setText("Tipo:");
+
+        jtfCodigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                lostFocus(evt);
+            }
+        });
 
         jtfLogin.setEnabled(false);
 
@@ -356,7 +366,35 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
             });
     }//GEN-LAST:event_jbtListarActionPerformed
     }
-
+    private void lostFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lostFocus
+        if (!jtfCodigo.getText().equals("")){    //exclamacao é uma negacao
+            try {
+                int parseInt = Integer.parseInt(jtfCodigo.getText());
+                this.controller.pesquisar();
+                List<Usuario> lista = this.controller.getLista();
+                
+                if (lista.size()>0) {
+                    //percorrer
+                    for (int i = 0; i < lista.size(); i++) {
+                       if (lista.get(i).getCodigo().equals(parseInt) ) { //equals ele compara
+                           this.controller.setUsuarioManipulado(lista.get(i));
+                           this.recebeForm();
+                           this.habilitarCampos();
+                           break;
+                       }                    
+                    }
+                } else {
+                     JOptionPane.showMessageDialog(this , "Não a nada a listar!");
+                }
+                 
+                 
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(this , "Numero inválido!");
+                jtfCodigo.requestFocus();
+            }
+        }        
+    }//GEN-LAST:event_lostFocus
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -432,5 +470,20 @@ public class UsuarioGui extends javax.swing.JInternalFrame {
         jckAtivo.setSelected(false);
         jpwConfirmacao.setText("");
         jpwSenha.setText("");
+    }
+
+    private void recebeForm() {
+      jtfCodigo.setText (this.controller.getUsuarioManipulado().getCodigo().toString());
+      jtfNome.setText(this.controller.getUsuarioManipulado().getNome());
+      jtfLogin.setText(this.controller.getUsuarioManipulado().getLogin());
+      jcbTipo.setSelectedIndex(this.controller.getUsuarioManipulado().getTipo());
+    
+      if (this.controller.getUsuarioManipulado().getStatus()==1) {
+          jckAtivo.setSelected(true);
+      } else {
+          jckAtivo.setSelected(false);
+      }
+      jpwSenha.setText(this.controller.getUsuarioManipulado().getSenha());
+      jpwConfirmacao.setText(this.controller.getUsuarioManipulado().getSenha());
     }
 }
