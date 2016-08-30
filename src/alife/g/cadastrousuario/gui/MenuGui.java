@@ -5,8 +5,10 @@
  */
 package alife.g.cadastrousuario.gui;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 
 /**
  *
@@ -71,6 +73,7 @@ public class MenuGui extends javax.swing.JFrame {
         UsuarioGui UsuarioGui = new UsuarioGui(); 
         this.desktopPane.add(UsuarioGui);     
         UsuarioGui.setVisible(true);
+        this.centralizaForm(UsuarioGui);
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     /**
@@ -114,5 +117,12 @@ public class MenuGui extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    private void centralizaForm(JInternalFrame form) {
+        Dimension desktopPanel = this.desktopPane.getSize();
+        Dimension jifSize = form.getSize();
+        form.setLocation( ( desktopPanel.width - jifSize.width )/2 ,
+                ( desktopPanel.height - jifSize.height )/2 );
+    }
 
 }
